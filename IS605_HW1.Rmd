@@ -124,7 +124,6 @@ sys_solver(A,b)
 
 ####### Check our work using the built in `solve` function:
 ```{r}
-# First will show the solution using built in solve() so we can check the answer:
 A <- array(c(1, 2, -1, 1, -1, -2, 3, 5, 4), dim=c(3,3))
 b <- c(1, 2, 6)
 solve(A, b)
