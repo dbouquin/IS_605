@@ -43,7 +43,7 @@ theta # given in radians
 ```
    
 ####Problem Set 2:
-Set up a system of equations with 3 variables and 3 constraints and solve for x.Please
+Set up a system of equations with 3 variables and 3 constraints and solve for x. Please
 write a function in R that will take two variables (matrix A & constraint vector b) and
 solve using elimination. Your function should produce the right answer for the system of
 equations for any 3-variable, 3-equation system. Please note that you do have to worry about zero pivots, and that you should not use the built-in function `solve` to solve this system or use matrix inverses.The approach that you should employ is to construct an Upper Triangular Matrix and then back-substitute to get the solution. Alternatively, you can augment the matrix
@@ -106,7 +106,7 @@ sys_solver <- function(A, b) {
 
   # use value of row 3 column 2 for vector addition to zero row 3 column 2
   vec <- new_m[3,2] * new_m[2,]
-  # now reduce row 3 using tempvec
+  # now reduce row 3 using vec
   new_m[3,] <- -new_m[3,] + vec  
 
   # solve for x with back subsitution
