@@ -1,0 +1,58 @@
+---
+title: "IS605_HW1"
+author: "Daina Bouquin"
+date: "February 6, 2016"
+output: html_document
+---
+    
+####Problem Set 1:
+#####1. Calculate the dot product of $u.v$ where $u=[0.5;0.5]$ and $v=[3;-4]$  
+```{r}
+u= c(0.5,0.5)
+v=c(3,-4)
+dp_uv<- u%*%v # %*% = matrix multiplication. If both vectors same length inner-product is returned
+dp_uv
+```
+#####2. What are the lengths of $u$ and $v$? 
+```{r}
+# Euclidean norm of the vector = the square root of the inner-product of a vector with itself.
+dp_uu <- u%*%u
+dp_vv <- v%*%v
+```
+Length of u:
+```{r}
+l_u <- sqrt(dp_uu)
+l_u
+```
+Length of v:
+```{r}
+l_v <- sqrt(dp_vv)
+l_v
+```
+#####3. What is the linear combination $3u-2v$?
+```{r}
+(3*u)-(2*v)
+```
+#####4. What is the angle between $u$ and $v$?
+```{r}
+#The dot-product between two vectors is proportional to their lengths and angle between them.
+#dp_uv = cosine of the angle between u and v
+theta <- acos(dp_uv/(l_u*l_v)) # acos() = arc-cosine
+theta
+```
+   
+####Problem Set 2:
+Set up a system of equations with 3 variables and 3 constraints and solve for x.  Please
+write a function in R that will take two variables (matrix A & constraint vector b) and
+solve using elimination.  Your function should produce the right answer for the system of
+equations for any 3-variable, 3-equation system. Please note that you do have to worry about zero pivots, and that you should not use the built-in function `solve` to solve this system or use matrix inverses.The approach that you should employ is to construct an Upper Triangular Matrix and then back-substitute to get the solution. Alternatively, you can augment the matrix
+A with vector b and jointly apply the Gauss Jordan elimination procedure.      
+   
+Please test it with the system below and it should produce a solution $x = [-1.55;-0.32;0.95]$
+$$\begin{bmatrix}1 & 1 & 3 \\2 & -1 & 5 \\-1 & -2 & 4\end{bmatrix}\,\begin{bmatrix}x_1 \\x_2 \\x_3\end{bmatrix}=\begin{bmatrix}1 \\2 \\6\end{bmatrix}$$   
+   
+```{r}
+
+
+```
+
