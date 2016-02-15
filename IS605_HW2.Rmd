@@ -4,7 +4,7 @@ author: "Daina Bouquin"
 date: "February 14, 2016"
 output: html_document
 ---
-This file can be seen fully rendered on RPubs [here]().
+This file can be seen fully rendered on RPubs [here](http://rpubs.com/dbouquin/IS605_HW2).
 
 ####Problem Set 1:
 #####1. Show that $A^TA\neq AA^T$  
