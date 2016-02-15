@@ -50,7 +50,7 @@ id1 == id2
 #####3. Write an R function to factorize a square matrix $A$ into LU or LDU 
 This function will factorize a 2x2 and a 3x3 matrix into LU
 ```{r}
-f <- function(A) {
+f_LU <- function(A) {
 
 #Check dimensions of the matrix - 2x2 or 3x3
 
@@ -112,10 +112,10 @@ Check with a 2x2 and a 3x3 matrix
 ```{r}
 # 2x2
 A2x2 <- matrix(c(2,3,4,5), nrow = 2)
-f(A2x2)
+f_LU(A2x2)
 
 # 3x3
 A3x3 <- matrix(c(8,9,10,0,1,2,11,12,13), nrow = 3)
-f(A3x3)
+f_LU(A3x3)
 ```
 
