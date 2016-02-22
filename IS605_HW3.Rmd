@@ -23,6 +23,14 @@ $$ A = \begin{bmatrix}1 & 2 & 3 & 4 \\0 & 2 & 4 & 7 \\0 & 0 & 5 & -25/8 \\0 & 0 
 $$ A = \begin{bmatrix}1 & 2 & 3 & 4 \\0 & 2 & 4 & 7 \\0 & 0 & 1 & 5/8 \\0 & 0 & 0 & 9/8\end{bmatrix}$$
 $$ A = \begin{bmatrix}1 & 2 & 3 & 4 \\0 & 2 & 4 & 7 \\0 & 0 & -4 & -5/2 \\0 & 0 & 0 & 9/8\end{bmatrix}$$
 $$ Rank\,\,=\,4 $$
+
+```{r}
+library(matrixcalc)
+# check with R
+m <- matrix(data = c(1,2,3,4,-1,0,1,3,0,1,-2,1,5,4,-2,-3), nrow = 4, ncol = 4, byrow = TRUE)
+m
+matrix.rank(m)
+```
    
 2. Given an $mxn$ matrix where $m>n$, what can be the maximum rank? The minimum rank, assuming that the matrix is non-zero?   
     
@@ -37,6 +45,13 @@ $$ B = \begin{bmatrix}1 & 2 & 1 \\0 & 0 & 0 \\2 & 4 & 2 \end{bmatrix}$$
 $$ B = \begin{bmatrix}2 & 4 & 2 \\0 & 0 & 0 \\2 & 4 & 2 \end{bmatrix}$$ 
 $$ B = \begin{bmatrix}1 & 2 & 1 \\0 & 0 & 0 \\0 & 0 & 0 \end{bmatrix}$$ 
 $$ Rank\,\,=\,1 $$   
+
+```{r}
+# check with R
+m <- matrix(data = c(1,2,1,3,6,3,2,4,2), nrow = 3, ncol = 3, byrow = TRUE)
+m
+matrix.rank(m)
+```
    
 #####Problem Set 2 #####
 Compute the eigenvalues and eigenvectors of the matrix A. You’ll need to write out the characteristic polynomial and show your solution.   
