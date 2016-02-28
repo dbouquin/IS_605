@@ -1,0 +1,97 @@
+---
+title: 'IS605_HW4'
+author: "Daina Bouquin"
+date: "Febrary 25, 2016"
+output: html_document
+---
+##Problem Set 1
+Given a 3 × 3 matrix: 
+$$A = \begin{bmatrix}-1 & 1 & 5 \\1 & 3 & 0 \\0 & -2 & 1\end{bmatrix}$$
+Write code in R to compute $X = AA^T$ and $Y = A^TA$. Then, compute the eigenvalues and eigenvectors of X and Y using the built-in commands in R.
+   
+```{r}
+# build the matrix
+A = matrix(c(-1,1,0,1,3,-2,5,0,1), 3, 3)
+A
+# Compute X and Y using built-in commands
+x <- A%*%t(A)
+x
+y <- t(A)%*%A
+x
+
+# compute eigenvalues and eigenvectors
+eigen_x <- eigen(x)
+eigen_x
+eigen_y <- eigen(y)
+eigen_y
+```
+Now, compute the left-singular, singular values, and right-singular vectors of A using the `svd()` command. 
+```{r}
+svd_A <- svd(A)
+svd_A # v = right, u = left
+```
+Examine the two sets of singular vectors and show that they are indeed eigenvectors of X and Y.
+```{r}
+# Compare the left singular vector u to the eigenvectors of x
+eigen_x$vectors
+svd_A$u
+round(abs(eigen_x$vectors)) == round(abs(svd_A$u))
+```
+The vectors are same except that one of the vectors is multiplied by a scalar of -1. Because this is just a scalar though we can say that these are on the same plane. Therefore the left singular vectors are the eigenvectors of X. We can perform the same examination with the eigenvectors of Y and the right singular vectors.
+```{r}
+(eigen_y$vectors)
+(svd_A$v)
+round(abs(eigen_y$vectors)) == round(abs(svd_A$v))
+```
+Show that the non-zero eigenvalues of both X and Y are the same and are squares of the non-zero singular values of A.   
+```{r}
+# all.equal -- compare R objects x and y testing ‘near equality’
+all.equal(eigen_x$values, (svd_A$d)^2)
+all.equal(eigen_y$values, (svd_A$d)^2)
+```
+
+##Problem Set 2
+Write a function to compute the inverse of a well-conditioned full-rank square matrix using co-factors. You may use built-in R commands to compute the determinant. Your function should have the following signature: `B = myinverse(A)` where `A` is a matrix and `B` is its inverse and $A×B = I$.    
+A matrix is full rank if all rows and columns are linearly independent.   
+```{r}
+myinverse <- function(A) {
+
+  #Check to see if the matrix is invertible
+  if (det(A) == 0) {
+    stop('This matrix is non-invertible. Try another!')
+  }
+  
+  # assign the rows and columns to variables m and n
+  m <- nrow(A)
+  n <- ncol(A)
+  
+  # create a co-factor matrix
+  # co-factor == the determinant of this sub-matrix along with the appropriate sign that goes with it.
+  # diag() -- extract or replace the diagonal of a matrix, or construct a diagonal matrix.
+  co_m <- diag(0, nrow=m, ncol=n)
+  
+  #compute the cofactors
+  #loop through rows and columns of the matrix A, remove the current value, and calculate the det() and sign
+  
+  for(i in 1:m)
+  {
+    for(j in 1:n)
+    {
+        co_m[i,j] <- (-1)^(i+j)*det(A[-i,-j]) # fill the rows and columns
+    }
+  }
+  
+  #Inverse of A = t(co_m)/det(A) -- t() gives transpose
+  return((t(co_m) / det(A)))
+}
+
+# Try it out 
+A = matrix(c(1,9,18,1,2,3,-5,-4,3), 3, 3)
+A
+B <- myinverse(A)
+B
+
+# Check the answer using solve() -- for inverse of square matrix
+s_A <- solve(A)
+round(s_A,2) == round(B,2)
+````
