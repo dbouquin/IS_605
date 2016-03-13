@@ -1,0 +1,141 @@
+---
+title: "IS605_HW6"
+author: "Daina Bouquin"
+date: "March 10, 2016"
+output: html_document
+---
+
+```{r, warning=FALSE, message=FALSE}
+library(dplyr)
+```
+
+#### Problem Set 1:
+1. When you roll a fair die 3 times, how many possible outcomes are there?
+```{r, warning=FALSE, message=FALSE}
+# Fair die has 6 sides with equal probability 
+result <- 6^3
+result
+```
+2. What is the probability of getting a sum total of 3 when you roll a die two times?
+```{r, warning=FALSE, message=FALSE}
+t_sums <- 6^2
+sum_three <- 2 
+prob <- sum_three / t_sums
+prob
+```
+3. Assume a room of 25 strangers. What is the probability that two of them have the
+same birthday? Assume that all birthdays are equally likely and equal to 1/365 each. What happens to this probability when there are 50 people in the room?
+```{r, warning=FALSE, message=FALSE}
+# reference: https://en.wikipedia.org/wiki/Birthday_problem
+
+days = 365
+
+# 25 people:
+n = 25
+p25 <- 1-exp(1)^(-n*(n-1)/(2*days))
+p25
+
+# 50 people:
+n = 50
+p50 <- 1-exp(1)^(-n*(n-1)/(2*days))
+p50
+```
+
+#### Problem Set 2:
+1. Write a program to take [a document](https://github.com/dbouquin/IS_605/blob/master/IS605_HW6/assign6.sample.txt) in English and print out the estimated probabilities for each of the words that occur in that document.    
+Your program should take in a file containing a large document and write out the probabilities of each of the words that appear in that document. Please remove all punctuation (quotes, commas, hyphens etc) and convert the words to lower case before you perform your calculations.   
+```{r, warning=FALSE, message=FALSE}
+clean <- function(text) {
+  
+  # replace non-ascii chars with '?' as is standard
+  # iconv() - http://www.inside-r.org/r-doc/base/iconv
+  clean_text <- iconv(text, "UTF-8", "ASCII", sub="?")
+
+  # replace other with empty char '' 
+  # use gsub() and regular expression - http://www.inside-r.org/r-doc/base/sub
+  clean_text <- gsub('[\'\\-\\.\\?\\$\\,\\"0-9]', '', text)
+  clean_text <- unlist(strsplit(clean_text, '[-]'))
+
+  # convert to lowercase
+  clean_text <- tolower(clean_text[clean_text != '' ])
+
+  return(clean_text)
+}
+
+word_prob <- function(text) {
+  
+  # dplyr for munging
+  require(dplyr)
+
+  # Use clean() to restucture the text.
+  words <- clean(text)
+
+  # Create a dataframe showing frequencies
+  p_word <- as.data.frame(table(words))
+
+  # add col showing prob
+  p_word <- p_word %>%  mutate(prob = Freq/sum(Freq)) %>% arrange(desc(prob))
+
+  #return the prob data frame.
+  return (p_word)
+}
+
+# Try out these first few steps using the test document
+doc <- scan( file = 'assign6.sample.txt' , what = character(0), quote=NULL, encoding= "UTF-8")
+p_one_word<- word_prob(doc)
+str(p_one_word)
+head(p_one_word)
+filter(p_one_word, words == "for")
+```
+2. Extend the program to calculate the probability of two words occurring adjacent to each other. It should take in a document, and two words (say 'the' and 'for') and compute the probability of each of the words occurring in the document and the joint probability of both of them occurring together. The order of the two words is not important.   
+```{r, warning=FALSE, message=FALSE}
+Pair <- function(text) {
+
+  # Create the needed empty vectors
+  word_single <- c()
+  word_pair <- c()
+
+  for(i in 1:length(text)) {
+    words <- clean(text[i]) # use clean() to restructure
+    words <- unlist(strsplit(words,"[ ]"))
+    words <- words[words != ""]
+    word_single <- c(word_single, words)
+    # lead - http://www.inside-r.org/node/230640
+    word_pair <- c(word_pair, paste(words, lead(words), sep=";"))
+  }  
+  return(list("single" = word_single, "pair" = word_pair))
+
+}
+
+p_two_words <- function(text, word_A, word_B){
+  
+# convert input words to lowercase  
+    word_A <- tolower(word_A)
+    word_B <- tolower(word_B)
+    words <- Pair(clean(text))
+    print(str(words))
+
+# Use 'word_prob()` from q1 to get the probabilities of a single word.
+    p_single <- word_prob(words$single)
+    p_pair <- word_prob(words$pair)
+
+    # words == word_A;word_B OR word_B;word_A (';' as delimiter)
+    pair <- p_pair %>% filter(words == paste(word_A, word_B, sep=";") | words == paste(word_B, word_A, sep=";"))
+
+    return(list("p_single_word_A" = p_single$prob[p_single$word==word_A], 
+                "p_single_word_B" = p_single$prob[p_single$word==word_B],
+                "pair_prob" = sum(pair$probs)
+                ))
+}
+
+# Try it out
+doc_2 <- scan(file = 'assign6.sample.txt', what = character(0), quote=NULL, sep="\n", encoding = "UTF-8")
+str(Pair(clean(doc_2)))
+p_two_words(doc_2, "the", "for")
+```
+3. Compare your probabilities of various words with the [Time Magazine corpus](http://corpus.byu.edu/time/).
+
+
+
+
+
