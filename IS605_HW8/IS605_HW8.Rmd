@@ -1,0 +1,56 @@
+---
+title: "IS605_HW8"
+author: "Daina Bouquin"
+date: "March 25, 2016"
+output: html_document
+---
+
+### Problem set 1:   
+Your colleague either commutes by train or by the bus. 20 days of the month, she takes the train and the remaining 10 days she takes the bus. If she takes the train, she reaches work on time with a probability of 0.9. If she takes the bus, she frequently gets stuck in traffic and reaches work on time with a probability of 0.5. Given that she was on time today, what is the probability that she took the bus to work today?
+
+Given: 
+    
+$p(Bus)  = \frac{1}{3}$   
+$p(Train) = \frac{2}{3}$   
+$p(e|Bus) = 0.5$   
+$p(e|Train) = 0.9$   
+
+Find the probability that she took the bus today using the "Bayes Rule"   
+   
+$$ p(Bus|e) = \frac{p(e|Bus) p(Bus)} {p(e|Bus) p(Bus) + p(e|Train) p(Train)} $$ 
+$$p(Bus|e) = \frac{.5\times\frac{1}{3}}{0.5(\frac{1}{3}) + 0.9(\frac{2}{3})} = \frac{5}{23} = 0.2174 $$
+$$ Answer: 0.2174$$
+    
+### Problem set 2:   
+In the Grade Network that we looked at in the notes (Figure 1), what happens to the probability of Difficulty of Course when you present the evidence that the received recommendation letter was good? In addition, now present the evidence that both SAT scores were good and the letter of recommendation was good, What is the probability of the Difficulty of Course now? You should use the `gRain` package in R to build your network and perform these calculations.
+![Network from Notes](https://raw.githubusercontent.com/dbouquin/IS_605/master/IS605_HW8/IS605_HW8_image.png)
+
+```{r, message=FALSE}
+# Installed bioconductor:
+# source("https://bioconductor.org/biocLite.R")
+# biocLite("RBGL")
+# gRain documentation: https://cran.r-project.org/web/packages/gRain/vignettes/gRain-intro.pdf
+library(gRain)
+
+# Create conditional probs based on Figure 1 from notes
+no_yes <- c("no", "yes")
+low_high <- c("low", "high")
+d <- cptable(~difficulty, values=c(0.3,0.7), levels = no_yes)
+i <- cptable(~intelligence, values = c(0.8, 0.2), levels = low_high)
+s_i <- cptable(~sat|intelligence, values = c(0.9,0.1,0.2,0.8), levels = low_high)
+g_d_i <- cptable(~grade|difficulty:intelligence, values=c(0.6,0.4,0.8,0.2,0.1,0.99,0.1,0.9), levels = low_high)
+l_g <- cptable(~letter|grade, values=c(0.9,0.1,0.5,0.95), levels = low_high)
+
+p_list <- compileCPT(list(d, i, s_i, g_d_i, l_g))
+pn <- grain(p_list)
+
+(querygrain(pn, nodes=c("difficulty", "intelligence", "sat", "grade", "letter"), type="marginal"))
+
+# What happens to the probability of Difficulty of Course when you present the evidence that the received recommendation letter was good?
+letter_good <- setFinding(pn, nodes = c("letter"), states=c("high"))
+(querygrain(letter_good, nodes=c("difficulty"), type="marginal"))
+
+# Present the evidence that both SAT scores were good and the letter of recommendation was good, What is the probability of the Difficulty of Course now?
+sat_good <- setFinding(letter_good, nodes=c("sat"), states=c("high"))
+(querygrain(sat_good, nodes=c("difficulty"), type="marginal"))
+```
