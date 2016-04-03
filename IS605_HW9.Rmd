@@ -71,10 +71,12 @@ head(s2,10)
 # Plot s1 and s2
 ggplot(s1, aes(s1$X)) + 
   geom_histogram(binwidth=.05,  aes(fill=..count..)) + 
+  xlab("Mean") +
   ggtitle("S1 Distribution of Means")
 
 ggplot(s2, aes(s2$X)) + 
   geom_histogram(binwidth=.05,  aes(fill=..count..)) + 
+  xlab("Mean") +
   ggtitle("S2 Distribution of Means")
 ```
 
@@ -105,6 +107,7 @@ dist_means(50, q1)
 # Second PDF
 dist_means(50, q2)
 ```
+
 ####5. Verify that as you set n to something like 10 or 20, each of the two PDFs produce normally distributed mean of samples, empirically verifying the Central Limit Theorem. 
 ```{r}
 # n = 10
