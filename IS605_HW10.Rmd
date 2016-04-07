@@ -1,0 +1,89 @@
+---
+title: "IS605_HW10"
+author: "Daina Bouquin"
+date: "April 7, 2016"
+output: html_document
+---
+
+PageRank assignment
+
+In the original formulation of the algorithm, the PageRank of a page $P_i$, denoted by
+$r(P_i)$, is the sum of the PageRanks of all pages pointing into $P_i$. Where $B_{P_i }$ is the set of pages pointing into $P_i$ and $|P_i|$ is the number of outlinks from $P_i$.
+
+$$ r(P_{ i })=\sum _{ P_{j∈}B_{P_i }}\frac{r(P_{ j })}{|P_{ j }|} $$
+
+You’ll verify for yourself that PageRank works by performing calculations on a small
+universe of web pages. Let’s use the 6 page universe that we had in the course notes. For this directed graph, perform the following calculations in R.
+     
+#####1. Form the $A$ matrix. Then, introduce decay and form the $B$ matrix as we did in the course notes.
+
+"The $A$ matrix is column normalized such that each element. $A_{ji} = \frac{1}{|P_i|}$ if there is a link from page $i$ to page $j$ and 0 otherwise. Note that this can be interpreted as the probability of clicking one of the links in page $i$ at random. 
+A new matrix $B$ which is a decayed version of the original matrix $A$ is defined as $B = 0.85 \times A + \frac{0.15}{n}$. To make every row add up to unity, the uniform probability is properly adjusted to be $(1 − d)$ where $d$ is the decay applied to the original transition matrix A. In the classic version by Page and Brin, they chose $d = 0.85$"
+
+```{r}
+# A from prompt
+c1 <- c(0,0.5,0.5,0,0,0)
+c2 <- c(0,0,1,0,0,0)
+c3 <- c(0.25,0.25,0,0,0.25,0.25)
+c4 <- c(0,0,0,0,0.5,0.5)
+c5 <- c(0,0,0,0.5,0,0.5)
+c6 <- c(0,0,0.5,0.5,0,0)
+
+A <-as.matrix(cbind(c1, c2, c3, c4, c5, c6))
+A
+
+B <- 0.85*A + 0.15/6 # n = number of pages ; d = 0.85
+B
+```
+#####2. Start with a uniform rank vector $r$ and perform power iterations on B until convergence. That is, compute the solution $r = Bn \times r$. Attempt this for a sufficiently large $n$ so that $r$ actually converges.
+```{r}
+# create a uniform rank vector
+r <- rep(1/nrow(A), nrow(A)) # 1/number of rows
+r
+
+# perform power iterations on B
+# Function takes X matrix as input
+power_it <- function(X, r, n) {
+  it = diag(nrow(X)) # diag() construct or replace a diagnonal matrix
+  # loop through n
+  for (i in 1:n)
+  {
+    it = it %*% X
+  }
+  return (it %*% r)
+}
+
+# try out the function on different n
+power_it(B, r, 10)
+power_it(B, r, 20)
+power_it(B, r, 30) #Stable!
+power_it(B, r, 40)
+power_it(B, r, 50)
+```
+3. Compute the eigen-decomposition of B and verify that you indeed get an eigenvalue
+of 1 as the largest eigenvalue and that its corresponding eigenvector is the same
+vector that you obtained in the previous power iteration method. Further, this
+eigenvector has all positive entries and it sums to 1.
+```{r, warning=FALSE}
+e_B <- eigen(B)
+ev_B <- as.numeric(e_B$values)
+ev_B # greatest value == 1
+e_B$vectors[,1]
+
+# check to make sure the answer is the same as power iteration method
+check <- as.numeric((1/sum(e_B$vectors[,1]))*e_B$vectors[,1])
+check
+power_it(B, r, 30)
+
+# you can see that the values are all positive and they sum to 1
+(sum(check) == 1)
+
+```
+4. Use the graph package in R and its page.rank method to compute the Page Rank
+of the graph as given in A. Note that you don’t need to apply decay. The package
+starts with a connected graph and applies decay internally. Verify that you do get
+the same PageRank vector as the two approaches above.
+```{r}
+
+
+```
