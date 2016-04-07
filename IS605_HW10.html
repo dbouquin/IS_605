@@ -67,12 +67,12 @@ img {
 </div>
 
 
-<p>PageRank assignment</p>
+<p><a href="https://github.com/dbouquin/IS_605/blob/master/IS605_HW10.pdf">PageRank assignment</a></p>
 <p>In the original formulation of the algorithm, the PageRank of a page <span class="math">\(P_i\)</span>, denoted by <span class="math">\(r(P_i)\)</span>, is the sum of the PageRanks of all pages pointing into <span class="math">\(P_i\)</span>. Where <span class="math">\(B_{P_i }\)</span> is the set of pages pointing into <span class="math">\(P_i\)</span> and <span class="math">\(|P_i|\)</span> is the number of outlinks from <span class="math">\(P_i\)</span>.</p>
 <p><span class="math">\[ r(P_{ i })=\sum _{ P_{j∈}B_{P_i }}\frac{r(P_{ j })}{|P_{ j }|} \]</span></p>
 <p>You’ll verify for yourself that PageRank works by performing calculations on a small universe of web pages. Let’s use the 6 page universe that we had in the course notes. For this directed graph, perform the following calculations in R.</p>
 <div id="form-the-a-matrix.-then-introduce-decay-and-form-the-b-matrix-as-we-did-in-the-course-notes." class="section level5">
-<h5>1. Form the <span class="math">\(A\)</span> matrix. Then, introduce decay and form the <span class="math">\(B\)</span> matrix as we did in the course notes.</h5>
+<h5>1. Form the <span class="math">\(A\)</span> matrix. Then, introduce decay and form the <span class="math">\(B\)</span> matrix as we did in <a href="https://github.com/dbouquin/IS_605/blob/master/wk10_PageRank.pdf">the course notes</a>.</h5>
 <p>“The <span class="math">\(A\)</span> matrix is column normalized such that each element. <span class="math">\(A_{ji} = \frac{1}{|P_i|}\)</span> if there is a link from page <span class="math">\(i\)</span> to page <span class="math">\(j\)</span> and 0 otherwise. Note that this can be interpreted as the probability of clicking one of the links in page <span class="math">\(i\)</span> at random. A new matrix <span class="math">\(B\)</span> which is a decayed version of the original matrix <span class="math">\(A\)</span> is defined as <span class="math">\(B = 0.85 \times A + \frac{0.15}{n}\)</span>. To make every row add up to unity, the uniform probability is properly adjusted to be <span class="math">\((1 − d)\)</span> where <span class="math">\(d\)</span> is the decay applied to the original transition matrix A. In the classic version by Page and Brin, they chose <span class="math">\(d = 0.85\)</span>”</p>
 <pre class="r"><code># A from prompt
 c1 &lt;- c(0,0.5,0.5,0,0,0)
