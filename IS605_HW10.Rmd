@@ -60,7 +60,7 @@ power_it(B, r, 30) #Stable!
 power_it(B, r, 40)
 power_it(B, r, 50)
 ```
-3. Compute the eigen-decomposition of B and verify that you indeed get an eigenvalue
+#####3. Compute the eigen-decomposition of B and verify that you indeed get an eigenvalue
 of 1 as the largest eigenvalue and that its corresponding eigenvector is the same
 vector that you obtained in the previous power iteration method. Further, this
 eigenvector has all positive entries and it sums to 1.
@@ -73,17 +73,24 @@ e_B$vectors[,1]
 # check to make sure the answer is the same as power iteration method
 check <- as.numeric((1/sum(e_B$vectors[,1]))*e_B$vectors[,1])
 check
-power_it(B, r, 30)
+stable <- power_it(B, r, 30) # this was where we got stability (convergence)
+# without 'rounding' to the 7th digit, the result is FALSE
+round(check,7) == round(stable,7)
 
 # you can see that the values are all positive and they sum to 1
-(sum(check) == 1)
+sum(check) == 1
 
 ```
-4. Use the graph package in R and its page.rank method to compute the Page Rank
-of the graph as given in A. Note that you don’t need to apply decay. The package
-starts with a connected graph and applies decay internally. Verify that you do get
-the same PageRank vector as the two approaches above.
-```{r}
+#####4. Use the `igraph` package (graph is depreciated?) in R and its `page.rank` method to compute the Page Rank of the graph as given in A. Note that you don’t need to apply decay. The package starts with a connected graph and applies decay internally. Verify that you do get the same PageRank vector as the two approaches above.
+```{r, warning=FALSE, message=FALSE}
+library(igraph)
 
+#?graph.adjacency()
+graph_A <- graph.adjacency(t(A), weighted = TRUE, mode = "directed") # must transpose, weight (default == NULL)
+# page.rank() == Google PageRank
+pr_graph_A <- page.rank(graph_A)$vector
 
+# make sure that the stable page rank calculated first are the same
+# without 'rounding' to the 7th digit, the result is FALSE
+round(pr_graph_A,7) == round(stable,7)
 ```
