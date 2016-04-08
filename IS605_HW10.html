@@ -161,9 +161,8 @@ power_it(B, r, 10)</code></pre>
 ## [5,] 0.15655927
 ## [6,] 0.22309696</code></pre>
 </div>
-<div id="compute-the-eigen-decomposition-of-b-and-verify-that-you-indeed-get-an-eigenvalue" class="section level5">
-<h5>3. Compute the eigen-decomposition of B and verify that you indeed get an eigenvalue</h5>
-<p>of 1 as the largest eigenvalue and that its corresponding eigenvector is the same vector that you obtained in the previous power iteration method. Further, this eigenvector has all positive entries and it sums to 1.</p>
+<div id="compute-the-eigen-decomposition-of-b-and-verify-that-you-indeed-get-an-eigenvalue-of-1-as-the-largest-eigenvalue-and-that-its-corresponding-eigenvector-is-the-same-vector-that-you-obtained-in-the-previous-power-iteration-method.-further-this-eigenvector-has-all-positive-entries-and-it-sums-to-1." class="section level5">
+<h5>3. Compute the eigen-decomposition of B and verify that you indeed get an eigenvalue of 1 as the largest eigenvalue and that its corresponding eigenvector is the same vector that you obtained in the previous power iteration method. Further, this eigenvector has all positive entries and it sums to 1.</h5>
 <pre class="r"><code>e_B &lt;- eigen(B)
 ev_B &lt;- as.numeric(e_B$values)
 ev_B # greatest value == 1</code></pre>
@@ -190,7 +189,7 @@ sum(check) == 1</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 </div>
 <div id="use-the-igraph-package-graph-is-depreciated-in-r-and-its-page.rank-method-to-compute-the-page-rank-of-the-graph-as-given-in-a.-note-that-you-dont-need-to-apply-decay.-the-package-starts-with-a-connected-graph-and-applies-decay-internally.-verify-that-you-do-get-the-same-pagerank-vector-as-the-two-approaches-above." class="section level5">
-<h5>4. Use the <code>igraph</code> package (graph is depreciated?) in R and its <code>page.rank</code> method to compute the Page Rank of the graph as given in A. Note that you don’t need to apply decay. The package starts with a connected graph and applies decay internally. Verify that you do get the same PageRank vector as the two approaches above.</h5>
+<h5>4. Use the <code>igraph</code> package (<code>graph</code> is depreciated?) in R and its <code>page.rank</code> method to compute the Page Rank of the graph as given in A. Note that you don’t need to apply decay. The package starts with a connected graph and applies decay internally. Verify that you do get the same PageRank vector as the two approaches above.</h5>
 <pre class="r"><code>library(igraph)
 
 #?graph.adjacency()
