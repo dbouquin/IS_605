@@ -1,0 +1,101 @@
+---
+title: "IS605_HW3"
+author: "Daina Bouquin"
+date: "February 21, 2016"
+output: html_document
+---
+Solution rendered in RPubs [here](http://rpubs.com/dbouquin/154670).
+   
+#####Problem Set 1 #####
+1. What is the rank of the matrix $A$?
+$$ A = \begin{bmatrix}1 & 2 & 3 & 4 \\-1 & 0 & 1 & 3 \\0 & 1 & -2 & 1 \\5 & 4 & -2 & -3\end{bmatrix}$$ 
+$$ A = \begin{bmatrix}-1 & -2 & -3 & -4 \\-1 & 0 & 1 & 3 \\0 & 1 & -2 & 1 \\5 & 4 & -2 & -3\end{bmatrix}$$
+$$ A = \begin{bmatrix}1 & 2 & 3 & 4 \\0 & 2 & 4 & 7 \\0 & 1 & -2 & 1 \\5 & 4 & -2 & -3\end{bmatrix}$$
+$$ A = \begin{bmatrix}5 & 10 & 15 & 20 \\0 & 2 & 4 & 7 \\0 & 1 & -2 & 1 \\5 & 4 & -2 & -3\end{bmatrix}$$
+$$ A = \begin{bmatrix}1 & 2 & 3 & 4 \\0 & 2 & 4 & 7 \\0 & 1 & -2 & 1 \\0 & -6 & -17 & -23\end{bmatrix}$$
+$$ A = \begin{bmatrix}1 & 2 & 3 & 4 \\0 & 1 & 2 & 7/2 \\0 & 1 & -2 & 1 \\0 & -6 & -17 & -23\end{bmatrix}$$
+$$ A = \begin{bmatrix}1 & 2 & 3 & 4 \\0 & 1 & 2 & 7/2 \\0 & 0 & -4 & -5/2 \\0 & -6 & -17 & -23\end{bmatrix}$$
+$$ A = \begin{bmatrix}1 & 2 & 3 & 4 \\0 & -6 & -12 & -21 \\0 & 0 & -4 & -5/2 \\0 & -6 & -17 & -23\end{bmatrix}$$
+$$ A = \begin{bmatrix}1 & 2 & 3 & 4 \\0 & 1 & 2 & 7/2 \\0 & 0 & -4 & -5/2 \\0 & 0 & -5 & -2\end{bmatrix}$$
+$$ A = \begin{bmatrix}1 & 2 & 3 & 4 \\0 & 2 & 4 & 7 \\0 & 0 & -4 & -5/2 \\0 & 0 & -5 & -2\end{bmatrix}$$
+$$ A = \begin{bmatrix}1 & 2 & 3 & 4 \\0 & 2 & 4 & 7 \\0 & 0 & 1 & 5/8 \\0 & 0 & -5 & -2\end{bmatrix}$$
+$$ A = \begin{bmatrix}1 & 2 & 3 & 4 \\0 & 2 & 4 & 7 \\0 & 0 & 5 & -25/8 \\0 & 0 & -5 & -2\end{bmatrix}$$
+$$ A = \begin{bmatrix}1 & 2 & 3 & 4 \\0 & 2 & 4 & 7 \\0 & 0 & 1 & 5/8 \\0 & 0 & 0 & 9/8\end{bmatrix}$$
+$$ A = \begin{bmatrix}1 & 2 & 3 & 4 \\0 & 2 & 4 & 7 \\0 & 0 & -4 & -5/2 \\0 & 0 & 0 & 9/8\end{bmatrix}$$
+$$ Rank\,\,=\,4 $$
+
+```{r}
+library(matrixcalc)
+# check with R
+m <- matrix(data = c(1,2,3,4,-1,0,1,3,0,1,-2,1,5,4,-2,-3), nrow = 4, ncol = 4, byrow = TRUE)
+m
+matrix.rank(m)
+```
+   
+2. Given an $mxn$ matrix where $m>n$, what can be the maximum rank? The minimum rank, assuming that the matrix is non-zero?   
+    
+Maximum rank = $m$ (rows)    
+Minimum rank = 1 (all other rows could be linearly dependent)   
+     
+3. What is the rank of matrix $B$?
+$$ B = \begin{bmatrix}1 & 2 & 1 \\3 & 6 & 3 \\2 & 4 & 2 \end{bmatrix}$$    
+R2 is a multiple of R1. R3 is a multiple of R1. They are linearly dependent.
+$$ B = \begin{bmatrix}3 & 6 & 3 \\3 & 6 & 3 \\2 & 4 & 2 \end{bmatrix}$$ 
+$$ B = \begin{bmatrix}1 & 2 & 1 \\0 & 0 & 0 \\2 & 4 & 2 \end{bmatrix}$$ 
+$$ B = \begin{bmatrix}2 & 4 & 2 \\0 & 0 & 0 \\2 & 4 & 2 \end{bmatrix}$$ 
+$$ B = \begin{bmatrix}1 & 2 & 1 \\0 & 0 & 0 \\0 & 0 & 0 \end{bmatrix}$$ 
+$$ Rank\,\,=\,1 $$   
+
+```{r}
+# check with R
+m <- matrix(data = c(1,2,1,3,6,3,2,4,2), nrow = 3, ncol = 3, byrow = TRUE)
+m
+matrix.rank(m)
+```
+   
+#####Problem Set 2 #####
+Compute the eigenvalues and eigenvectors of the matrix A. You’ll need to write out the characteristic polynomial and show your solution.   
+Eigenvalues:   
+$$ A = \begin{bmatrix}1 & 2 & 3 \\0 & 4 & 5 \\0 & 0 & 6 \end{bmatrix}$$ 
+$$ \lambda\,I_3 = \begin{bmatrix}\lambda & 0 & 0 \\0 & \lambda & 0 \\0 & 0 & \lambda \end{bmatrix}$$ 
+$$ det(A-\lambda\,I_n)=0$$ 
+$$ det\,\begin{bmatrix}1-\lambda & 2 & 3 \\0 & 4-\lambda & 5 \\0 & 0 & 6-\lambda \end{bmatrix} = 0$$ 
+$$(1-\lambda)(4-\lambda)(6-\lambda)=0$$
+$$ Eigenvalues\,of\,A:$$
+$$\lambda=1,\, \lambda=4,\, \lambda=6$$
+   
+Eigenvectors:   
+$$\lambda=1$$
+$$ \begin{bmatrix}1-\lambda & 2 & 3 \\0 & 4-\lambda & 5 \\0 & 0 & 6-\lambda \end{bmatrix}$$ 
+    
+$$ \begin{bmatrix}0 & 2 & 3 \\0 & 3 & 5\\0 & 0 & 5\end{bmatrix}\,\begin{bmatrix}v_1 \\v_2 \\v_3\end{bmatrix}=0$$ 
+
+$$The\,first\,pivot\,is\,0.\,x_1 = free.\,Let\,the\,value=1.$$   
+
+$$3 x_2 + 5 x_3 = 0 \,and\, 5 x_3 = 0$$
+
+$$x_{\lambda=1}\,=\begin{bmatrix}1 \\0 \\0\end{bmatrix}$$
+    
+$$\lambda=4$$
+$$ \begin{bmatrix}-3 & 2 & 3 \\0 & 0 & 5\\0 & 0 & 2\end{bmatrix}\,\begin{bmatrix}v_1 \\v_2 \\v_3\end{bmatrix}=0$$
+$$Second\,pivot\,is\, 0.\,x_2=free.\,Let\,the\,value=1.$$
+$$-3x_1+2x_2 +3x_3 = 0\,and\, 2x_3 = 0$$
+$$x_3=0,\,x_2=1\,and\,x_1=2/3$$
+$$x_{\lambda=4}\,=\begin{bmatrix}2/3\\1 \\0\end{bmatrix}$$
+   
+$$\lambda=6$$
+$$ \begin{bmatrix}-5 & 2 & 3\\0 & -2 & 5\\0 & 0 & 0\end{bmatrix}\,\begin{bmatrix}v_1 \\v_2 \\v_3\end{bmatrix}=0$$ 
+$$Third\,pivot\,is\, 0.\,x_3=free.\,Let\,the\,value=1.$$
+$$-5x_1 +2x_2 +3x_3 = 0 and, -2x_1+5x_3 = 0$$
+$$x_3 = 1,\,x_2 = 5/2,\,and\,x_1=8/5$$
+
+$$x_{\lambda=6}\,=\begin{bmatrix}8/5 \\5/2 \\1\end{bmatrix}$$
+
+```{r}
+# Check with R
+m <- matrix(data = c(1,0,0,2,4,0,3,5,6), nrow = 3, ncol = 3, byrow = FALSE)
+m
+ev <- eigen(m)
+ev <- ev$values
+ev
+```
