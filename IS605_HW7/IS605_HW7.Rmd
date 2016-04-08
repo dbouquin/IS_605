@@ -1,0 +1,118 @@
+---
+title: "IS605_HW7"
+author: "Daina Bouquin"
+date: "March 16, 2016"
+output: html_document
+---
+
+1. Please write a function to compute the expected value and standard deviation of an array of values. Compare your results with that of R’s mean and std functions. 
+```{r}
+
+# create a small example dataset
+set.seed(20)
+x <- rnorm(n=20, mean=2, sd=1.5)
+x
+n <- length(x) 
+  
+# calculates both mean and sd of x
+Mean_SD <- function(x) 
+{
+  man_mean <- sum(x)/n
+
+  man_sd <- sqrt(sum((x - mean(x))^2) / (n - 1))
+
+  return (c("Mean" = man_mean, "SD" = man_sd))
+
+}
+
+Mean_SD(x)
+mean(x)
+sd(x)
+```
+
+2. Now, consider that instead of being able to neatly fit the values in memory in an array,you have an infinite stream of numbers coming by. How would you estimate the mean and standard deviation of such a stream?
+```{r}
+# create a file that can be continually updated and doesn't have to be stored constantly, it'll just be read as needed with new data if it's there.
+
+create_temp_file <- function(temp_name)
+{
+  # create empty numeric variables to store data later
+   length <- 0
+   sum <- 0
+   sum_sq <- 0
+   mean <- 0
+   sd <- 0
+   # write the empty variables to a df and then to csv
+   temp_file <- data.frame(length, sum, sum_sq, mean, sd)
+   write.csv(temp_file, temp_name)
+}
+
+# Calculate the mean and sd of the data found in the file
+moving_mean <- function(new_data)
+  # first check if the file is in the working directory, if not create one.
+{
+  fileName <- "tempfile.csv"
+  if (file.exists(fileName))
+  {
+    temp_file <- read.csv(fileName)
+  }
+  else
+  {
+    create_temp_file(fileName)
+  }
+
+  # Map the current value colnames to variables
+  # If this isn't done there is an error: differing number of rows
+  length_a  <- temp_file$length
+  sum_a   <- temp_file$sum
+  sum_sq_a <- temp_file$sum_sq
+
+  # Calculate based ond data found in temp_file
+  length_b <- length_a + 1
+  sum_b <- sum_a + new_data
+  sum_sq_b <- sum_sq_a + new_data^2 
+
+  # Find mean and sd
+  mean_b <- sum_b/length_b
+  sd_b <- sqrt((length_b)*sum_sq_b-sum_b^2)/length_b
+
+  # create a new variable to be written over past temp_file
+  temp_file_new <- data.frame(length = length_b, sum = sum_b, sum_sq = sum_sq_b, mean=mean_b, sd=sd_b)
+  write.csv(temp_file_new, fileName)
+
+  # return the calculations
+  return (c("mean" = mean_b, "sd" = sd_b))
+
+}
+
+```
+Give the functions a try with a few sample datasets
+```{r}
+## Test 1 ##
+set.seed(10)
+test <- rnorm(n=500, mean=25, sd=1.5)
+
+create_temp_file("tempfile.csv")
+
+for(i in test)
+{
+    mean_rolling <- moving_mean(i)
+}
+
+mean_rolling
+
+## Test 2 ##
+set.seed(20)
+test2 <- rnorm(n=1000, mean=55, sd=1)
+
+create_temp_file("tempfile.csv")
+
+for(i in test2)
+{
+    mean_rolling2 <- moving_mean(i)
+}
+
+mean_rolling2
+```
+
+
