@@ -1,0 +1,88 @@
+---
+title: "IS605_HW11"
+author: "Daina Bouquin"
+date: "April 14, 2016"
+output: html_document
+---
+
+```{r, warning=FALSE}
+library(ggplot2)
+```
+Using R’s lm function, perform regression analysis and measure the significance of the independent variables for the below two data sets. In the first case, you are evaluating the statement that we hear that Maximum Heart Rate of a person is related to their age by the following equation:
+$$MaxHR = 220 − Age$$
+    
+####1. Perform a linear regression analysis fitting Max Heart Rate to Age using the `lm` function in R. What is the resulting equation? Is the effect of Age on Max HR significant? What is the significance level? Please also plot the fitted relationship between Max HR and Age.
+```{r cars}
+Age   <- c(18, 23, 25, 35, 65, 54, 34, 56, 72, 19, 23, 42, 18, 39, 37)
+MaxHR <- c(202, 186, 187, 180, 156, 169, 174, 172, 153, 199, 193, 174, 198, 183, 178)
+HR_data <- data.frame(Age,MaxHR)
+
+# use lm() to perform a linear regression analysis
+HR_data_fit <- lm(MaxHR ~ Age, data = HR_data) 
+HR_data_fit$coefficients
+
+# is the model significant?
+# "We reject the null hypothesis if this probability is lower than a significance threshold (typically 0.01)"
+model_summary <- summary(HR_data_fit)
+model_summary # p-value much lower than 0.01
+```
+#####Therefore the resulting equation is $MaxHR = 210.0485 - 0.7977Age$ and we reject the null hypothesis
+```{r}
+# plot the fitted relationship
+# http://docs.ggplot2.org/current/geom_smooth.html
+ggplot(HR_data, aes(Age, MaxHR)) + 
+  geom_point(aes(y=MaxHR)) + 
+  stat_smooth(method = lm, level = 0.95) + 
+  xlab("Age") + ylab("Max Heart Rate") + 
+  ggtitle("Maximum Heart Rate by Age")
+```
+
+####2. Using the [Auto data set from Assignment 5](https://raw.githubusercontent.com/dbouquin/IS_605/master/IS605_HW5/auto-mpg.data) perform a Linear Regression analysis using mpg as the dependent variable and the other 4 (displacement, horsepower, weight, acceleration) as independent variables. What is the final linear regression fit equation? Which of the 4 independent variables have a significant impact on mpg? What are their corresponding significance levels? What are the standard errors on each of the coefficients?    
+####Please perform this experiment in two ways. First take any random 40 data points from the entire auto data sample and perform the linear regression fit and measure the 95% confidence intervals. Then, take the entire data set (all 392 points) and perform linear regression and measure the 95% confidence intervals. Please report the resulting fit equation, their significance values and confidence intervals for each of the two runs.
+
+```{r}
+# read in the auto-data from assignment 5 and check its strucuture
+download.file("https://raw.githubusercontent.com/dbouquin/IS_605/master/IS605_HW5/auto-mpg.data", "auto-mpg.data", method="curl")
+auto_data <- read.table('auto-mpg.data', 
+                        col.names=c('disp', 'hp', 'wt', 'acc', 'mpg'))
+str(auto_data)
+
+# analyze the random sample of 40 first. Use sample() and set.seed()
+set.seed(10)
+auto_sample <- auto_data[sample(nrow(auto_data), 40),]
+
+# create the model
+m_auto_sample <- lm(mpg ~ disp + hp + wt + acc, data = auto_sample)
+summary(m_auto_sample)
+m_auto_sample$coefficients
+
+# check to see if any of the variables have a significant impact on mpg
+# Is p < 0.05? No, none have a significant impact (True == significant)
+summary(m_auto_sample)$coefficients[2:5,4] < 0.05
+
+# display the significance levels
+summary(m_auto_sample)$coefficients[2:5,4]
+
+# display the standard error
+summary(m_auto_sample)$coefficients[2:5,2]
+```
+Given the very low p-value, we can reject the null hypothesis. The resulting equation is as follows: $$mpg = 44.12 - 0.02 displacement - 0.006 horsepower - 0.005 weight + 0.076 acceleration$$
+   
+Perform the analysis again with the full dataset:
+```{r}
+m_auto <- lm(mpg ~ disp + hp + wt + acc, data = auto_data)
+summary(m_auto)
+m_auto$coefficients
+
+# check to see if any of the variables have a significant impact on mpg
+# Is p < 0.05? True == significant impact
+summary(m_auto)$coefficients[2:5,4] < 0.05
+
+# display the significance levels
+summary(m_auto)$coefficients[2:5,4]
+
+# display the standard error
+summary(m_auto)$coefficients[2:5,2]
+```
+Given the very low p-value, we can reject the null hypothesis. The resulting equation is as follows: $$ mpg = 45.25 - 0.006 displacement - 0.044 horsepower - 0.005 weight - 0.023 acceleration$$
+You can see from the two models that the standard error decreased as we increased the size of the dataset used to create the model.
