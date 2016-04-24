@@ -1,0 +1,56 @@
+---
+title: "IS605_HW12"
+author: "Daina Bouquin"
+date: "April 24, 2016"
+output: html_document
+---
+
+```{r}
+library(stats)
+library(boot)
+```
+
+Using the stats and boot libraries in R perform a cross-validation experiment to observe
+the bias variance tradeoff. You’ll use the auto data set from previous assignments. This
+dataset has 392 observations across 5 variables. We want to fit a polynomial model of
+various degrees using the glm function in R and then measure the cross validation error
+using cv.glm function.
+```{r}
+# download and read in the auto data
+download.file("https://raw.githubusercontent.com/dbouquin/IS_605/master/IS605_HW5/auto-mpg.data", "auto-mpg.data", method="curl")
+auto_data <- read.table('auto-mpg.data', 
+                        col.names=c('disp', 'hp', 'wt', 'acc', 'mpg'))
+str(auto_data)
+```
+Fit various polynomial models to compute mpg as a function of the other four variables
+acc, wt, hp, and disp using glm function.
+```{r}
+glm_fit1 <- glm(mpg~poly(disp+hp+wt+acc,1), data=auto_data)
+glm_fit2 <- glm(mpg~poly(disp+hp+wt+acc,2), data=auto_data)
+glm_fit3 <- glm(mpg~poly(disp+hp+wt+acc,3), data=auto_data)
+glm_fit4 <- glm(mpg~poly(disp+hp+wt+acc,4), data=auto_data)
+glm_fit5 <- glm(mpg~poly(disp+hp+wt+acc,5), data=auto_data)
+glm_fit6 <- glm(mpg~poly(disp+hp+wt+acc,6), data=auto_data)
+glm_fit7 <- glm(mpg~poly(disp+hp+wt+acc,7), data=auto_data)
+glm_fit8 <- glm(mpg~poly(disp+hp+wt+acc,8), data=auto_data)
+
+set.seed(250)
+# use cv.glm() on the results
+# ?cv.glm
+cv_err1 <- cv.glm(auto_data,glm_fit1,K=5)$delta[1]
+cv_err2 <- cv.glm(auto_data,glm_fit2,K=5)$delta[1]
+cv_err3 <- cv.glm(auto_data,glm_fit3,K=5)$delta[1]
+cv_err4 <- cv.glm(auto_data,glm_fit4,K=5)$delta[1]
+cv_err5 <- cv.glm(auto_data,glm_fit5,K=5)$delta[1]
+cv_err6 <- cv.glm(auto_data,glm_fit6,K=5)$delta[1]
+cv_err7 <- cv.glm(auto_data,glm_fit7,K=5)$delta[1]
+cv_err8 <- cv.glm(auto_data,glm_fit8,K=5)$delta[1]
+
+# combine the cv.glm results
+cv_err <- rbind(cv_err1, cv_err2,cv_err3,cv_err4,cv_err5,cv_err6,cv_err7,cv_err8)
+
+# plot the resulting 5 fold cross-validation curve to see the the tradeoff between bias and variance.
+plot(x = 1:8, cv_err, type='b')
+```
+
+
