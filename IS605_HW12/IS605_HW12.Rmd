@@ -52,5 +52,13 @@ cv_err <- rbind(cv_err1, cv_err2,cv_err3,cv_err4,cv_err5,cv_err6,cv_err7,cv_err8
 # plot the resulting 5 fold cross-validation curve to see the the tradeoff between bias and variance.
 plot(x = 1:8, cv_err, type='b')
 ```
+Feedback:
 
+Should have been done with a loop 
+e.g.
 
+for (deg in 1:8) {
+
+glm.fit=glm(mpg~poly(displacement+horsepower+weight+acceleration, deg), data=auto_mpg)
+
+... and then do the cross-validation
