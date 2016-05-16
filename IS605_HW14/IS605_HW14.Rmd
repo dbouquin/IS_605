@@ -1,0 +1,44 @@
+---
+title: "IS605_HW14"
+author: "Daina Bouquin"
+date: "May 15, 2016"
+output: html_document
+---
+
+This week, we’ll work out some Taylor Series expansions of popular functions. For each function, only consider its valid ranges as indicated in [the notes](https://github.com/dbouquin/IS_605/blob/master/IS605_HW14/wk14mod1.pdf) when you are computing the Taylor Series expansion.
+   
+Generally:   
+$$f(x)\quad =\sum _{n=0 }^{\infty}{\frac {f^{n}(a)}{n!}}(x-a)^{n}\quad$$
+    
+1. 
+$$f(x) = \frac{1}{(1−x)} = \frac{1}{(1-a)}+\frac{(x-a)}{(1-a)^2}+\frac{(1-a)^2}{(1-a)^3}+\frac{(1-a)^3}{(1-a)^4}+ ...$$  $$if a = 0$$   
+$$f(x) = 1+x+x^2+x^3+x^4+ ...$$    
+$$f(x)\quad =\sum _{ n=0 }^{ \infty  }{ x^{ n },\quad x\quad \in \quad (-1,1) }$$
+     
+2. 
+$$f(x) = e^x = e^a + e^a (x-a) + e^a (x-a)^2 + e^a (x-a)^3+ ...$$   
+$$if a = 0$$
+$$f(x) = e^x = e^0 + e^0 (x-0) + e^0 (x-0)^2 + e^0 (x-0)^3+ ...$$ 
+$$f(x) = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \frac{x^4}{4!} + ...$$ 
+$$f(x)\quad =\sum _{ n=0 }^{ \infty  }{ \frac { x^{ n } }{ n! } ,\quad x\quad \in \quad R }$$
+    
+3. 
+$$f(x) = ln(1 + x) = ln(1+a) + \frac{(x-a)}{(1+a)}-\frac{(x-a)^2}{2!(1+a)^2}+\frac{(x-a)^3}{3!2(1+a)^3} - \frac{(x-a)^4}{4!(3)(2)(1+a)^3} + ...$$   
+$$if a = 0$$   
+$$f(x) = x - \frac{x^2}{2}+\frac{x^3}{3}-\frac{x^4}{4}+ ...$$
+$$f(x)\quad =\sum _{ n=0 }^{ \infty  }{ (-1)^{ n-1 }\frac { x^{ n } }{ n } ,\quad x\quad \in \quad (-1,1) }$$
+    
+$$f(x)\quad =\sum _{ n=0 }^{ \infty  }{ (-1)^{ n+1 }\frac { x^{ n } }{ n } ,\quad x\quad \in \quad (-1,1) }$$
+
+
+
+
+
+
+
+
+
+
+
+
+
