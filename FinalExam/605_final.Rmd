@@ -4,7 +4,8 @@ author: "Daina Bouquin"
 date: "May 19, 2016"
 output: html_document
 ---
-   
+ 
+ *  *  * 
 #### Part 1
 1. What is the rank of this matrix?    
 $\begin{bmatrix} 1 & -1 & 3 & -5 \\ 2 & 1 & 5 & -9 \\ 6 & -1 & -2 & 4 \end{bmatrix}$   
@@ -14,6 +15,7 @@ rank = 3
 $\begin{bmatrix} 1 & 0 & 0 & \frac { 2 }{ 55 }  \\ 0 & 1 & 0 & \frac { -14 }{ 55 }  \\ 0 & 0 & 1 & \frac { -97 }{ 55 }  \end{bmatrix}$   
    
 3. Define orthonormal basis vectors. Please write down at least one orthonormal basis for the 4-dimensional vector space $R^4$.   
+   
 Orthonormal basic vectors must be:   
 "... all unit vectors and orthogonal to each other." [[1]](https://en.wikipedia.org/wiki/Orthonormal_basis)   
 One such vectorset is: 
@@ -29,9 +31,13 @@ A <- matrix(c(6,1,1,0,7,-1,-1,3,0),3,3,byrow=T)
 (A <- eigen(A))
 ```
 6. Given a column stochastic matrix of links between URLs, what can you say about the PageRank of this set of URLs? How is it related to its eigendecomposition?   
+   
+PageRank of a web page can be described as "the probability of finding a user randomly landing on a page based on the link structure of the web." The PageRanks of a group of pages are the solution to the equation $r = A × r$, where we let $r$ be the final probability vector (e.g. $r = (r1,r2,r3,r4,r5,r6...)$). This is similar to an eigenvalue decomposition with $λ = 1$ in that if a matrix $A$ has an eigenvalue of 1 then we can find a solution. The Perron-Frobenius theorem tells us that for a column stochastic matrix with positive entries, we can find 1 as an eigenvalue, and all other eigenvalues have a magnitude of less than 1. [[2]](https://github.com/dbouquin/IS_605/raw/master/IS605_HW10/IS605_HW10.pdf)
+
+7. Assuming that we are repeatedly sampling sets of numbers (each set is of size n) from an unknown probability density function. What can we say about the mean value of each set?    
     
-7. Assuming that we are repeatedly sampling sets of numbers (each set is of size n) from an unknown probability density function. What can we say about the mean value of each set?   
-    
+We can say that the averages will be normally distributed due to the Central Limit Theorem - the mean of "a sufficiently large number of iterates of independent random variables, each with a well-defined expected value and well-defined variance, will be approximately normally distributed, regardless of the underlying distribution." [[3]](https://en.wikipedia.org/wiki/Central_limit_theorem)   
+   
 8. What is the derivative of $e^x sin^2(x)$?   
 ${e}^{x}sin(x)(sin(x)+2cos(x))$
    
@@ -42,4 +48,15 @@ $\frac{\cos\left(x\right)+3}{\ln{\left(10\right)}\left(3x+\sin\left(x\right)\rig
 10. What is $\int{e^x cos(x) + sin(x)dx}$? Don’t forget the constant of integration.     
 $\frac {{e}^{x}(sin(x)+cos(x))}{2} −cos(x)+C$   
 
-[1] https://en.wikipedia.org/wiki/Orthonormal_basis
+[1] https://en.wikipedia.org/wiki/Orthonormal_basis   
+[2] https://github.com/dbouquin/IS_605/raw/master/IS605_HW10/IS605_HW10.pdf    
+[3] https://en.wikipedia.org/wiki/Central_limit_theorem    
+   
+ *  *  *   
+#### Part 2   
+    
+ *  *  *
+#### Part 3   
+   
+ 
+ 
