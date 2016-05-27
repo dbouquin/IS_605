@@ -213,7 +213,6 @@ head(mySGD(x, y, 0.001, n = 10), 2)
 alphas <- c(0.001,0.01,0.1,1.0)
 ns <- c(5,5,5,5,5,5) 
 
-par(mfrow = n2mfrow(length(alphas)))
 for(i in 1:length(alphas)) {
   result <- mySGD(x, y, alphas[i], ns[i])
 
