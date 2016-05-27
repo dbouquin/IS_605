@@ -153,11 +153,11 @@ Once you have your final gradient descent solution, compare this with regular li
 ```{r}
 # Read and process the datasets
 # download the files from GitHub
-download.file("https://raw.githubusercontent.com/dbouquin/IS_605/master/sgd_ex_data/ex3x.dat", "ex3x.dat", method="curl")
+download.file("https://raw.githubusercontent.com/dbouquin/IS_605/master/FinalExam/mini-project-data/ex3x.dat", "ex3x.dat", method="curl")
 x <- read.table('ex3x.dat')
 # we can standardize the x vaules using scale() as done above
 x <- scale(x)
-download.file("https://raw.githubusercontent.com/dbouquin/IS_605/master/sgd_ex_data/ex3y.dat", "ex3y.dat", method="curl")
+download.file("https://raw.githubusercontent.com/dbouquin/IS_605/master/FinalExam/mini-project-data/ex3y.dat", "ex3y.dat", method="curl")
 y <- read.table('ex3y.dat')
 # combine the datasets
 data3 <- cbind(x,y)
