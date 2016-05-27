@@ -230,6 +230,8 @@ for(i in 1:length(alphas)) {
 ```{r}
 # use built-in lm()
 data3_lm <- lm(price ~ area_sqft+bedrooms, data=data3)
+par(mfrow=c(2,2))
+plot(data3_lm)
 summary(data3_lm)
 ```
 Comparing the two approaches
