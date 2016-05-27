@@ -164,7 +164,7 @@ data3 <- cbind(x,y)
 colnames(data3) <- c("area_sqft", "bedrooms","price")
 
 ################ Multivarible Linear Regression using Stochastic Gradient Descent
-# after much hair-pulling: http://stackoverflow.com/questions/37485138/stochastic-gradient-descent-from-gradient-descent-implementation-in-r?noredirect=1#comment62470302_37485138
+# after much hair-pulling:
 
 # http://www.r-bloggers.com/linear-regression-by-gradient-descent/
 # vector populated with 1s for the intercept coefficient
@@ -195,6 +195,7 @@ GD <- function(x, y, alpha){
 }
 
 # wrapper to subset the data
+# http://stackoverflow.com/questions/37485138/stochastic-gradient-descent-from-gradient-descent-implementation-in-r?noredirect=1#comment62470302_37485138
 mySGD <- function(x, y, alpha, n = nrow(x)) {
   idx <- sample(nrow(x), n)
   y <- y[idx, , drop = FALSE]
@@ -224,7 +225,6 @@ for(i in 1:length(alphas)) {
   lines(result[,2],type="b",col="#0072B2",lwd=0.35)
   lines(result[,3],type="b",col="#66CC99",lwd=0.35)
 }
-
 ```
 ```{r}
 # use built-in lm()
