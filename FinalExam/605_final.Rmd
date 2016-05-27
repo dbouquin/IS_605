@@ -152,29 +152,23 @@ Once you have your final gradient descent solution, compare this with regular li
 
 ```{r}
 # Read and process the datasets
-
 # download the files from GitHub
-download.file("https://raw.githubusercontent.com/dbouquin/IS_605/master/FinalExam/mini-project-data/ex3x.dat", "ex3x.dat", method="curl")
+download.file("https://raw.githubusercontent.com/dbouquin/IS_605/master/sgd_ex_data/ex3x.dat", "ex3x.dat", method="curl")
 x <- read.table('ex3x.dat')
-
 # we can standardize the x vaules using scale() as done above
 x <- scale(x)
-
-download.file("https://raw.githubusercontent.com/dbouquin/IS_605/master/FinalExam/mini-project-data/ex3y.dat", "ex3y.dat", method="curl")
+download.file("https://raw.githubusercontent.com/dbouquin/IS_605/master/sgd_ex_data/ex3y.dat", "ex3y.dat", method="curl")
 y <- read.table('ex3y.dat')
-
 # combine the datasets
 data3 <- cbind(x,y)
 colnames(data3) <- c("area_sqft", "bedrooms","price")
-str(data3)
 
-head(data3)
+################ Multivarible Linear Regression using Stochastic Gradient Descent
+# after much hair-pulling: http://stackoverflow.com/questions/37485138/stochastic-gradient-descent-from-gradient-descent-implementation-in-r?noredirect=1#comment62470302_37485138
 
 # http://www.r-bloggers.com/linear-regression-by-gradient-descent/
-
 # vector populated with 1s for the intercept coefficient
 x1 <- rep(1, length(data3$area_sqft))
-
 # appends to dfs
 # create x-matrix of independent variables
 x <- as.matrix(cbind(x1,x))
@@ -190,42 +184,61 @@ cost <- function(x,y,theta){
 
 # GD simultaneous update algorithm
 # https://www.coursera.org/learn/machine-learning/lecture/8SpIM/gradient-descent
-GD <- function(x, alpha){
-      theta <- matrix(c(0,0,0), nrow=1) 
+GD <- function(x, y, alpha){
+  theta <- matrix(c(0,0,0), nrow=1)
+  theta_r <- NULL
   for (i in 1:500) {
-       theta <- theta - alpha*cost(x,y,theta)  
-       theta_r <- rbind(theta_r,theta)    
+    theta <- theta - alpha*cost(x,y,theta)  
+    theta_r <- rbind(theta_r,theta)    
   }
-return(theta_r)
+  return(theta_r)
 }
 
-# gradient descent α = (0.001, 0.01, 0.1, 1.0) - defined for 500 iterations
+# wrapper to subset the data
+mySGD <- function(x, y, alpha, n = nrow(x)) {
+  idx <- sample(nrow(x), n)
+  y <- y[idx, , drop = FALSE]
+  x <- x[idx, , drop = FALSE]
+  GD(x, y, alpha)
+}
 
+# Check to make sure it works and try with different Ns
+set.seed(1)
+head(mySGD(x, y, 0.001, n = 5), 2)
+
+set.seed(1)
+head(mySGD(x, y, 0.001, n = 10), 2)
+
+# gradient descent α = (0.001, 0.01, 0.1, 1.0) 
 alphas <- c(0.001,0.01,0.1,1.0)
+ns <- c(5,5,5,5,5,5) 
 
-# Plot price, area in square feet, and the number of bedrooms
-
-# create empty vector theta_r
-theta_r<-c()
-
+par(mfrow = n2mfrow(length(alphas)))
 for(i in 1:length(alphas)) {
+  result <- mySGD(x, y, alphas[i], ns[i])
 
- result <- GD(x, alphas[i])
- 
- # red = price 
- # blue = sq ft 
- # green = bedrooms
- plot(result[,1],ylim=c(min(result),max(result)),col="#CC6666",ylab="Value",lwd=0.35,
-      xlab=paste("alpha=", alphas[i]),xaxt="n") #suppress auto x-axis title
-      lines(result[,2],type="b",col="#0072B2",lwd=0.35)
-      lines(result[,3],type="b",col="#66CC99",lwd=0.35)
+  # red = price 
+  # blue = sq ft 
+  # green = bedrooms
+  plot(result[,1],ylim=c(min(result),max(result)),col="#CC6666",ylab="Value",lwd=0.35,
+       xlab=paste("alpha=", alphas[i]),xaxt="n") #suppress auto x-axis title
+  lines(result[,2],type="b",col="#0072B2",lwd=0.35)
+  lines(result[,3],type="b",col="#66CC99",lwd=0.35)
 }
 
 ```
 ```{r}
-# use built-in fit()
-data3_glm <- glm(price ~ area_sqft+bedrooms, data=data3)
-summary(data3_glm)
+# use built-in lm()
+data3_lm <- lm(price ~ area_sqft+bedrooms, data=data3)
+summary(data3_lm)
 ```
 Comparing the two approaches
-
+```{r}
+result[500,]
+data3_lm
+```
+   
+You can see that the intercepts between the two models generally match but they do differ by a small amount: 338273.22 for SGD compared to 340413 for the `lm()` approach. This is only about 0.63% off.
+```{r}
+round(100-((338273.22/340413)*100),2)
+```
