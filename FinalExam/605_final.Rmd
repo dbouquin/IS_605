@@ -1,5 +1,5 @@
 ---
-title: "605_Final"
+title: "IS 605 Final"
 author: "Daina Bouquin"
 date: "May 19, 2016"
 output: html_document
@@ -8,11 +8,11 @@ output: html_document
  *  *  * 
 #### Part 1
 1. What is the rank of this matrix?    
-$\begin{bmatrix} 1 & -1 & 3 & -5 \\ 2 & 1 & 5 & -9 \\ 6 & -1 & -2 & 4 \end{bmatrix}$   
-rank = 3
+$$\begin{bmatrix} 1 & -1 & 3 & -5 \\ 2 & 1 & 5 & -9 \\ 6 & -1 & -2 & 4 \end{bmatrix}$$   
+$$rank = 3$$
    
 2. What is the reduced row-echelon form of the above matrix?   
-$\begin{bmatrix} 1 & 0 & 0 & \frac { 2 }{ 55 }  \\ 0 & 1 & 0 & \frac { -14 }{ 55 }  \\ 0 & 0 & 1 & \frac { -97 }{ 55 }  \end{bmatrix}$   
+$$\begin{bmatrix} 1 & 0 & 0 & \frac { 2 }{ 55 }  \\ 0 & 1 & 0 & \frac { -14 }{ 55 }  \\ 0 & 0 & 1 & \frac { -97 }{ 55 }  \end{bmatrix}$$   
    
 3. Define orthonormal basis vectors. Please write down at least one orthonormal basis for the 4-dimensional vector space $R^4$.   
    
@@ -22,8 +22,8 @@ One such vectorset is:
 $R^4=[v1=(1,0,0,0),v2=(0,1,0,0),v3=(0,0,1,0), v4=(0,0,0,1)]$   
    
 4. Given the following matrix, what is its characteristic polynomial?   
-$\begin{bmatrix} 6 & 1 & 1 \\ 0 & 7 & -1 \\ -1 & 3 & 0 \end{bmatrix}$   
-$x^3−13x^2+46x−25$   
+$$\begin{bmatrix} 6 & 1 & 1 \\ 0 & 7 & -1 \\ -1 & 3 & 0 \end{bmatrix}$$      
+$$x^3−13x^2+46x−25$$   
    
 5. What are its eigenvectors and eigenvalues? Please note that it is possible to get complex vectors as eigenvectors.
 ```{r}
@@ -32,21 +32,21 @@ A <- matrix(c(6,1,1,0,7,-1,-1,3,0),3,3,byrow=T)
 ```
 6. Given a column stochastic matrix of links between URLs, what can you say about the PageRank of this set of URLs? How is it related to its eigendecomposition?   
    
-PageRank of a web page can be described as "the probability of finding a user randomly landing on a page based on the link structure of the web." The PageRanks of a group of pages are the solution to the equation $r = A × r$, where we let $r$ be the final probability vector (e.g. $r = (r1,r2,r3,r4,r5,r6...)$). This is similar to an eigenvalue decomposition with $λ = 1$ in that if a matrix $A$ has an eigenvalue of 1 then we can find a solution. The Perron-Frobenius theorem tells us that for a column stochastic matrix with positive entries, we can find 1 as an eigenvalue, and all other eigenvalues have a magnitude of less than 1. [[2]](https://github.com/dbouquin/IS_605/raw/master/IS605_HW10/IS605_HW10.pdf)
+PageRank of a web page can be described as "the probability of finding a user randomly landing on a page based on the link structure of the web." The PageRanks of a group of pages are the solution to the equation $r = A × r$, where we let $r$ be the final probability vector (e.g. $r = (r1,r2,r3,r4,r5,r6...)$). This is similar to an eigenvalue decomposition with $λ = 1$ in that if a matrix $A$ has an eigenvalue of one, then we can find a solution. Further, the Perron-Frobenius theorem tells us that for a column stochastic matrix with positive entries we can find an eigenvalue of one, and all other eigenvalues will be less than one. [[2]](https://github.com/dbouquin/IS_605/raw/master/IS605_HW10/IS605_HW10.pdf)
 
 7. Assuming that we are repeatedly sampling sets of numbers (each set is of size n) from an unknown probability density function. What can we say about the mean value of each set?    
     
 We can say that the averages will be normally distributed due to the Central Limit Theorem - the mean of "a sufficiently large number of iterates of independent random variables, each with a well-defined expected value and well-defined variance, will be approximately normally distributed, regardless of the underlying distribution." [[3]](https://en.wikipedia.org/wiki/Central_limit_theorem)   
    
 8. What is the derivative of $e^x sin^2(x)$?   
-${e}^{x}sin(x)(sin(x)+2cos(x))$
+$${e}^{x}sin(x)(sin(x)+2cos(x))$$
    
 9. What is the derivative of $log(x^3 + sin(x))$?   
 Use the chain rule   
-$\frac{\cos\left(x\right)+3}{\ln{\left(10\right)}\left(3x+\sin\left(x\right)\right)}$
+$$\frac{\cos\left(x\right)+3}{\ln{\left(10\right)}\left(3x+\sin\left(x\right)\right)}$$
    
 10. What is $\int{e^x cos(x) + sin(x)dx}$? Don’t forget the constant of integration.     
-$\frac {{e}^{x}(sin(x)+cos(x))}{2} −cos(x)+C$   
+$$\frac {{e}^{x}(sin(x)+cos(x))}{2} −cos(x)+C$$   
 
 [1] https://en.wikipedia.org/wiki/Orthonormal_basis   
 [2] https://github.com/dbouquin/IS_605/raw/master/IS605_HW10/IS605_HW10.pdf    
@@ -54,9 +54,178 @@ $\frac {{e}^{x}(sin(x)+cos(x))}{2} −cos(x)+C$
    
  *  *  *   
 #### Part 2   
+2.1: Sampling from function       
+Assume that you have a function that generates integers between 0 and 50 with the following probability distribution: $$P(x==k)=\begin{pmatrix} 50 \\ k \end{pmatrix}{ p }^{ k }{ q }^{ 50-k }$$
+where $p=0.2$ and $q=1−p=0.8$ and $x∈[0,50]$. This is also known as a Binomial Distribution. Write a function to sample from this distribution. After that, generate 1000 samples from this distribution and plot the histogram of the sample. Please note that the Binomial distribution is a discrete distribution and takes values only at integer values of x between $x ∈ [0, 50]$. Sampling from a discrete distribution with finite values is very simple but it is not the same as sampling from a continuous distribution.
+
+```{r}
+# Use the built in function for binomial distribution - dbinom()
+# x will be a vector representing the probability distribution specified in the prompt
+
+binom_func<- function(x,s, p) {
+dbinom(x, s, p)
+}
+
+x <- as.numeric(c(0:50))
+
+# 1000 samples of x using can be done with or without replacement using sample()
+sample_x <- sample(x, 1000, replace=TRUE, prob=binom_func(x, 50, .2))
+
+# plot a histogram of the sample
+hist(sample_x, col = "#0072B2", main = "1000 samples from a binomial distribution")
+```
+     
+2.2: Principal Components Analysis    
+For [the auto data](https://raw.githubusercontent.com/dbouquin/IS_605/master/FinalExam/auto-mpg.data) set attached with the final exam, please perform a Principal Components Analysis by performing an SVD on the 4 independent variables (with mpg as the dependent variable) and select the top 2 directions. Please scatter plot the data set after it has been projected to these two dimensions. Your code should print out the two orthogonal vectors and also perform the scatter plot of the data after it has been projected to these two dimensions.
+
+```{r}
+# download the file from GitHub
+download.file("https://raw.githubusercontent.com/dbouquin/IS_605/master/FinalExam/auto-mpg.data", "auto-mpg.data", method="curl")
+auto_data <- read.table('auto-mpg.data', 
+                        col.names=c('disp', 'hp', 'wt', 'acc', 'mpg'))
+# str(auto_data) # check to see if it is structured properly
+
+# normalize the data using scale()
+X <- scale(data.matrix(auto_data[1:4])) # independent variables
+mpg <- data.matrix(auto_data[5]) # dependent variable
+
+# calculate the covariance matrix using cov()
+COV <- cov(X)
+
+# perform SVD on the covariance matrix using svd() 
+LSA <- svd(COV)
+
+# show variance eigenvectors - $d column
+LSA$d
+# From the eigenvectors we can see that most of the variance can be explained by the first two dimensions.
+
+# plot the data projected onto these two dimensions
+# Let's now project the data onto these two dimensions
+LSA <- svd(X)
+
+U <- as.matrix(LSA$u[, 1:2])
+V <- as.matrix(LSA$v[, 1:2])
+D <- as.matrix(diag(LSA$d)[1:2, 1:2])
+
+mapped <- U %*% D %*% t(V)
+colnames(mapped) <- c("Displacement", "Horsepower", "Weight", "Acceleration")
+pairs(~.,data=cbind(mapped,mpg), 
+   main=paste("Auto data as mapped onto its first two dimensions"))
+```
     
+2.3: Sampling in Bootstrapping       
+As we discussed in class, in bootstrapping we start with n data points and repeatedly sample many times with replacement. Each time, we generate a candidate data set of size n from the original data set. All parameter estimations are performed on these candidate data sets. It can be easily shown that any particular data set generated by sampling n points from an original set of size n covers roughly 63.2% of the original data set. Using probability theory and limits, please prove that this is true. After that, write a program to perform this sampling and show that the empirical observation also agrees this.    
+    
+Probability of pulling an item from a uniform distribution is $\frac{1}{n}$, therefore the probability of not pulling an item is $1-\frac{1}{n}$. The probability of not pulling for sample size n is $(1-\frac{1}{n})^n$. The probability of an item not being chosen is then: 
+$$\lim_{x\to\infty} (1-\frac{1}{n})^n = \frac{1}{e}$$
+$$\approx 0.368$$
+$$1-0.368 \approx 0.632$$
+
+```{r}
+# boostrap n elements from a sequence 1:n
+bss <- function(n){
+  # create a sequence of values for sampling
+  v <- seq(1:n)
+  # sample with replacement n-times using replicate()
+  s <- replicate(n,{sample(v,1,replace=TRUE)})
+  # return the % of values samples in this iteration
+  return(length(unique(s))/n)
+}
+
+# try it out
+n <- 500
+bss(n)
+# repeat 1000 times and average the results
+mean(replicate(1000,{bss(n)}))
+
+```
  *  *  *
 #### Part 3   
-   
+In this mini project, you’ll perform a Multivariate Linear Regression analysis using Stochastic Gradient Descent (SGD). The data set consists of two predictor variables and one response variable. The predictor variables are living area in square feet and number of bedrooms. The response variable is the price of the house. You have 47 data points in total. 
+      
+Since both the number of rooms and the living area are in different units, it makes it hard to compare them in relative terms. One way to compensate for this is to standardize the variables. In order to standardize, you estimate the mean and standard deviation of each variable and then compute new versions of these variables. For instance, if you have a variable $x$, then then standardized version of $x$ is $x_{std} = (x − μ)/σ$ where $μ$ and $σ$ are the mean and standard deviation of $x$, respectively.  
+    
+As we saw in the gradient descent equations, we introduce a dummy variable $x_0 = 1$ in order to calculate the intercept term of the linear regression. Please standardize the 
+2 variables, introduce the dummy variable and then write a function to perform gradient descent on this data set. You’ll repeat gradient descent for a range of α values. Please use $α = (0.001, 0.01, 0.1, 1.0)$ as your choices. For each value of $α$ perform about 500 SGD iterations with 5 randomly picked samples in each iteration and compute $J(θ)$ at the end of each iteration. When you perform SGD, you randomly pick a mini-batch (in this case 5 samples), use that mini-batch to compute the gradient, and then take a step to improve the objective function. You repeat this process in each iteration. It is very important to randomly pick samples in each iteration – otherwise SGD will not work. Please plot $J(θ)$ versus number of iterations for each of the 4 $α$ choices.
+    
+Once you have your final gradient descent solution, compare this with regular linear regression (using the built-in function in R). Please document both solutions in your submission. How does the SGD solution differ from the Linear Regression solution? Are they different? If so, why? If not, why not?
+
+```{r}
+# Read and process the datasets
+
+# download the files from GitHub
+download.file("https://raw.githubusercontent.com/dbouquin/IS_605/master/FinalExam/mini-project-data/ex3x.dat", "ex3x.dat", method="curl")
+x <- read.table('ex3x.dat')
+
+# we can standardize the x vaules using scale() as done above
+x <- scale(x)
+
+download.file("https://raw.githubusercontent.com/dbouquin/IS_605/master/FinalExam/mini-project-data/ex3y.dat", "ex3y.dat", method="curl")
+y <- read.table('ex3y.dat')
+
+# combine the datasets
+data3 <- cbind(x,y)
+colnames(data3) <- c("area_sqft", "bedrooms","price")
+str(data3)
+
+head(data3)
+
+# http://www.r-bloggers.com/linear-regression-by-gradient-descent/
+
+# vector populated with 1s for the intercept coefficient
+x1 <- rep(1, length(data3$area_sqft))
+
+# appends to dfs
+# create x-matrix of independent variables
+x <- as.matrix(cbind(x1,x))
+# create y-matrix of dependent variables
+y <- as.matrix(y)
+L <- length(y)
+
+# cost gradient function: independent variables and values of thetas
+cost <- function(x,y,theta){
+  gradient <- (1/L)* (t(x) %*% ((x%*%t(theta)) - y))
+  return(t(gradient)) 
+}
+
+# GD simultaneous update algorithm
+# https://www.coursera.org/learn/machine-learning/lecture/8SpIM/gradient-descent
+GD <- function(x, alpha){
+      theta <- matrix(c(0,0,0), nrow=1) 
+  for (i in 1:500) {
+       theta <- theta - alpha*cost(x,y,theta)  
+       theta_r <- rbind(theta_r,theta)    
+  }
+return(theta_r)
+}
+
+# gradient descent α = (0.001, 0.01, 0.1, 1.0) - defined for 500 iterations
+
+alphas <- c(0.001,0.01,0.1,1.0)
+
+# Plot price, area in square feet, and the number of bedrooms
+
+# create empty vector theta_r
+theta_r<-c()
+
+for(i in 1:length(alphas)) {
+
+ result <- GD(x, alphas[i])
  
- 
+ # red = price 
+ # blue = sq ft 
+ # green = bedrooms
+ plot(result[,1],ylim=c(min(result),max(result)),col="#CC6666",ylab="Value",lwd=0.35,
+      xlab=paste("alpha=", alphas[i]),xaxt="n") #suppress auto x-axis title
+      lines(result[,2],type="b",col="#0072B2",lwd=0.35)
+      lines(result[,3],type="b",col="#66CC99",lwd=0.35)
+}
+
+```
+```{r}
+# use built-in fit()
+data3_glm <- glm(price ~ area_sqft+bedrooms, data=data3)
+summary(data3_glm)
+```
+Comparing the two approaches
+
