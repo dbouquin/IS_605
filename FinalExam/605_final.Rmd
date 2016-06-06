@@ -23,7 +23,7 @@ $R^4=[v1=(1,0,0,0),v2=(0,1,0,0),v3=(0,0,1,0), v4=(0,0,0,1)]$
    
 4. Given the following matrix, what is its characteristic polynomial?   
 $$\begin{bmatrix} 6 & 1 & 1 \\ 0 & 7 & -1 \\ -1 & 3 & 0 \end{bmatrix}$$      
-$$x^3−13x^2+46x−25$$   
+$$x^3−13x^2+46x−26$$   
    
 5. What are its eigenvectors and eigenvalues? Please note that it is possible to get complex vectors as eigenvectors.
 ```{r}
